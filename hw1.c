@@ -26,6 +26,7 @@ void GenerateString(int n, char* answerString)
 
 	while (i < n)
 	{
+		// поправьте форматирование, уберите лишние пробелы и лишение пустые строки
 		answerString[i++] = curChar                                                                                                                                 r;
 
 		int j = 0;
