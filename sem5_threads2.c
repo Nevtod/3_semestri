@@ -15,6 +15,7 @@
 
 
 long a[3] = {0, };
+int cnt = 0;
 
 void *mthread(void *dummy)
 {
