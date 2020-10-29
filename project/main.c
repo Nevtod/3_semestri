@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-
+// двусторонний обмен данными между родственными процессами с помощью 2ух pipe-ов
 int main()
 {
     int fd1[2], fd2[2];
