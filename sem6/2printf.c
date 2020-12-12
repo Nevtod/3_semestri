@@ -6,6 +6,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 
 int cnt;
 void do_semop(int semid, int op)
@@ -29,10 +30,6 @@ int main()
     // Реализуем в данной программе обе
     cnt = 0;
     int fd; //file descriptor
-    int progId; // first or second prog
-    
-    printf("Введите номер программы (1 или 2): ");
-    scanf("%d", &progId);
     
     char keyfileName[] = "2printfIPC";   // filename for semafors key
     char logsfile[] = "2printf.log"; // logs file
@@ -71,20 +68,26 @@ int main()
         exit(-1);
     }
         
-    while (progId == 1)
+    int result = fork();
+    if (result)
     {
-        do_semop(semid, -1);
-        dprintf(fd, "aaaaaaaaaaaa\n");
-        do_semop(semid, 1);
-    }
-    
-    while (progId == 2)
+        char str[] = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n";
+        while (1)
+        {
+            //do_semop(semid, -1);
+            write(fd, str, strlen(str) + 1);
+            //do_semop(semid, 1);
+        }
+    } else
     {
-        do_semop(semid, -1);
-        dprintf(fd, "bbbbbbbbbbbb\n");
-        do_semop(semid, 1);
-    }
+        char str[] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n";
+        while (2)
+        {
+            //do_semop(semid, -1);
+            write(fd, str, strlen(str) + 1);
+            //do_semop(semid, 1);
+        }
     if (close(fd) < 0) printf("Cant close file");
-        
+    }
     return 0;
 }
